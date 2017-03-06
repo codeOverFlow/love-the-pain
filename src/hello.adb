@@ -1,6 +1,7 @@
 WITH Ada.Text_Io; USE Ada.Text_Io;
 WITH Ada.Integer_Text_IO; USE Ada.Integer_Text_IO;
 WITH Ada.Float_Text_IO; USE Ada.Float_Text_IO;
+WITH Ada.Numerics.Float_Random;
 
 PROCEDURE Hello IS
 
@@ -55,6 +56,27 @@ PROCEDURE Hello IS
       Put("Entre les deux on a: "); Put(C3); New_Line;
    END Lettres;
 
+
+   FUNCTION Moyenne(Nombre : IN Natural) RETURN Float IS
+      TYPE T_Tableau IS ARRAY (Integer RANGE<>) OF Float;
+      USE Ada.Numerics.Float_Random;
+
+      Tableau : T_Tableau(0..(Nombre - 1));
+      Somme : Float := 0.0;
+      Hasard : Generator;
+   BEGIN
+      Reset(Hasard);
+      FOR I IN Tableau'Range LOOP
+         Tableau(I) := Random(Hasard) * 20.0; -- met la note sur 20
+         Put(Tableau(I), Fore => 2, Aft => 2, Exp => 0); NEW_Line;
+      END LOOP;
+
+      FOR Note OF Tableau LOOP
+         Somme := Somme + Note;
+      END LOOP;
+      RETURN Somme / Float(Tableau'Length);
+   END Moyenne;
+
 BEGIN
    Put_Line("Salut tout le monde !") ; --on affiche un message
    Ask_Age;
@@ -62,4 +84,5 @@ BEGIN
    Euclide(13, 0);
    Infos_Cercle(3);
    Lettres;
+   Put("Moyenne: "); Put(Moyenne(5), Fore => 2, Aft => 2, Exp => 0); NEW_Line;
 END Hello ;
